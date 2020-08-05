@@ -26,4 +26,7 @@ class Customer extends Controller
     public function index(){
         return view('customer/index');
     }
+    function custData(){
+        return view('customer/custData');
+    }
 }
