@@ -16,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/')->name('dashboard')->uses('Customer@index');
 Route::get('/custData')->name('custData')->uses('Customer@custData');
+Route::get('/getCustData')->name('getCustData')->uses('Customer@getCustData');
 Auth::routes();
 

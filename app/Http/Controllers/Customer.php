@@ -26,7 +26,29 @@ class Customer extends Controller
     public function index(){
         return view('customer/index');
     }
-    function custData(){
+    public function custData(){
         return view('customer/custData');
+    }
+    public function getCustData()
+    {
+        $customer = Customer::select(['id', 'id_pel', 'name', 'class', 'power', 'option']);
+        dd($customer);
+        // return Datatables::of($users)
+        //     ->addColumn('action', function ($user) {
+        //         return '<a href="#edit-'.$user->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+        //     })
+        //     ->editColumn('id', '{{$id}}')
+        //     ->removeColumn('password')
+        //     ->setRowId('id')
+        //     ->setRowClass(function ($user) {
+        //         return $user->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+        //     })
+        //     ->setRowData([
+        //         'id' => 'test',
+        //     ])
+        //     ->setRowAttr([
+        //         'color' => 'red',
+        //     ])
+        //     ->make(true);
     }
 }

@@ -24,22 +24,8 @@
                         <h3 class="card-title">Bordered Table</h3>
                     </div>    
                 <div class="card-body">
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
-                            <thead>
-                            <tr>
-                                <th> Code </th>
-                                <th> Code </th>
-                                <th> Code </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>001</td>
-                                    <td>001</td>
-                                    <td>001</td>
-                                </tr>
-                            </tbody>
+                    <div class="card-body">
+                        <table class="table" id="customer_table">
                         </table>
                     </div>
                 </div>
@@ -47,4 +33,19 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    $('#customer_table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! json_encode(url("getCustData")) !!}',
+        columns: [
+            {data: 'id', name: 'No'},
+            {data: 'id_pel', name: 'ID PEL'},
+            {data: 'name', name: 'Nama'},
+            {data: 'class', name: 'Class'},
+            {data: 'power', name: 'Daya'},
+            {data: 'action', name: 'action', orderable: false, searchable: false}
+        ]
+    });
+</script>
 @endsection
