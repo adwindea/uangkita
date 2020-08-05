@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.main', ['title'=> 'Customer Data'])
 
 @section('content')
     <!-- Content Header (Page header) -->
