@@ -17,3 +17,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/')->name('product.dashboard')->uses('Customer@index');
+Auth::routes();
+

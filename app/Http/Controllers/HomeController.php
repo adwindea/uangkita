@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Customer extends Controller
+class HomeController extends Controller
 {
-    
     /**
      * Create a new controller instance.
      *
@@ -22,8 +21,8 @@ class Customer extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-
-    public function index(){
-        return view('customer/index');
+    public function index()
+    {
+        return view('home');
     }
 }
