@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->share('appName', 'MORGAN');
+        view()->share('companyName', 'UP3');
     }
 }
