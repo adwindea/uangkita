@@ -26,6 +26,16 @@
                 <div class="card-body">
                     <div class="card-body">
                         <table class="table" id="customer_table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>ID PEL</th>
+                                    <th>Nama</th>
+                                    <th>Class</th>
+                                    <th>Daya</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
                         </table>
                     </div>
                 </div>
@@ -33,19 +43,30 @@
         </div>
     </div>
 </section>
-{{-- <script type="text/javascript">
+
+<script src="{{url ('AdminLTE/plugins/select2/js/select2.full.min.js')}}"></script>
+<script src="{{url ('AdminLTE/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<link href="{{url ('AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+<script src="{{url ('AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<link href="{{url ('AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}" rel="stylesheet">
+<script src="{{url ('AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{url ('AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{url ('AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{url ('AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{url ('AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+<script type="text/javascript">
     $('#customer_table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! json_encode(url("getCustData")) !!}',
+        ajax: '{!! route('getCustData') !!}',
         columns: [
-            {data: 'id', name: 'No'},
-            {data: 'id_pel', name: 'ID PEL'},
-            {data: 'name', name: 'Nama'},
-            {data: 'class', name: 'Class'},
-            {data: 'power', name: 'Daya'},
+            {data: 'id', name: 'id'},
+            {data: 'id_pel', name: 'id_pel'},
+            {data: 'name', name: 'name'},
+            {data: 'class', name: 'class'},
+            {data: 'power', name: 'power'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
     });
-</script> --}}
+</script>
 @endsection
