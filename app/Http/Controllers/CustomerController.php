@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Customer;
 
-class Customer extends Controller
+class CustomerController extends Controller
 {
-    
+
     /**
      * Create a new controller instance.
      *
@@ -32,7 +33,6 @@ class Customer extends Controller
     public function getCustData()
     {
         $customer = Customer::select(['id', 'id_pel', 'name', 'class', 'power', 'option']);
-        dd($customer);
         // return Datatables::of($users)
         //     ->addColumn('action', function ($user) {
         //         return '<a href="#edit-'.$user->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';

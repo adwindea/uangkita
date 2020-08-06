@@ -22,7 +22,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Bordered Table</h3>
-                    </div>    
+                    </div>
                 <div class="card-body">
                     <div class="card-body">
                         <table class="table" id="customer_table">
@@ -33,7 +33,7 @@
         </div>
     </div>
 </section>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $('#customer_table').DataTable({
         processing: true,
         serverSide: true,
@@ -47,5 +47,5 @@
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
     });
-</script>
+</script> --}}
 @endsection
