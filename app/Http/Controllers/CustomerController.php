@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Customer;
+use DataTables;
 
 class CustomerController extends Controller
 {
@@ -32,23 +33,24 @@ class CustomerController extends Controller
     }
     public function getCustData()
     {
-        $customer = Customer::select(['id', 'id_pel', 'name', 'class', 'power', 'option']);
-        // return Datatables::of($users)
-        //     ->addColumn('action', function ($user) {
-        //         return '<a href="#edit-'.$user->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-        //     })
-        //     ->editColumn('id', '{{$id}}')
-        //     ->removeColumn('password')
-        //     ->setRowId('id')
-        //     ->setRowClass(function ($user) {
-        //         return $user->id % 2 == 0 ? 'alert-success' : 'alert-warning';
-        //     })
-        //     ->setRowData([
-        //         'id' => 'test',
-        //     ])
-        //     ->setRowAttr([
-        //         'color' => 'red',
-        //     ])
-        //     ->make(true);
+        // $customers = Customer::select(['id', 'id_pel', 'name', 'class', 'power']);
+        $customers = Customer::all();
+        return Datatables::of($customers)
+            ->addColumn('action', function ($customers) {
+                return '<a href="#edit-'.$customers->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+            })
+            // ->editColumn('id', '{{$id}}')
+            // ->removeColumn('password')
+            // ->setRowId('id')
+            // ->setRowClass(function ($customers) {
+            //     return $customers->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+            // })
+            // ->setRowData([
+            //     'id' => 'test',
+            // ])
+            // ->setRowAttr([
+            //     'color' => 'red',
+            // ])
+            ->make(true);
     }
 }

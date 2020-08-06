@@ -18,4 +18,3 @@ Route::get('/')->name('dashboard')->uses('CustomerController@index');
 Route::get('/custData')->name('custData')->uses('CustomerController@custData');
 Route::get('/getCustData')->name('getCustData')->uses('CustomerController@getCustData');
 Auth::routes();
-
