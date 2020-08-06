@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Customer;
 use DataTables;
+use Auth;
 
 class CustomerController extends Controller
 {
@@ -26,7 +27,8 @@ class CustomerController extends Controller
      */
 
     public function index(){
-        return view('customer/index');
+        $data['user'] = Auth::user();
+        return view('customer/index', $data);
     }
     public function custData(){
         return view('customer/custData');
@@ -36,6 +38,8 @@ class CustomerController extends Controller
         // $customers = Customer::select(['id', 'id_pel', 'name', 'class', 'power']);
         $customers = Customer::all();
         return Datatables::of($customers)
+            ->removeColumn('id')
+            ->addIndexColumn()
             ->addColumn('action', function ($customers) {
                 return '<a href="#edit-'.$customers->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
             })
