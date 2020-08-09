@@ -13,8 +13,17 @@ class CreateGarduInduksTable extends Migration
      */
     public function up()
     {
-        Schema::create('gardu_induks', function (Blueprint $table) {
+        Schema::create('gardu_induk', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('isvalid')->default(1);
+            $table->bigInteger('code');
+            $table->string('name', 100);
+            $table->string('address', 500)->nullable(true);
+            $table->decimal('lat', 8,3)->nullable(true);
+            $table->decimal('long', 9,3)->nullable(true);
+            $table->string('phone', 50)->nullable(true);
+            $table->string('area', 50)->nullable(true);
+            $table->string('status', 50)->nullable(true);
             $table->timestamps();
         });
     }
