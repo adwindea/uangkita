@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/')->name('dashboard')->uses('CustomerController@index');
-Route::get('/custData')->name('custData')->uses('CustomerController@custData');
-Route::get('/getCustData')->name('getCustData')->uses('CustomerController@getCustData');
+Route::get('/')->name('dashboard')->uses('FinanceController@index');
+Route::get('/fiInputSpend')->name('inputSpend')->uses('FinanceController@fiInputSpend');
+// Route::get('/custData')->name('custData')->uses('CustomerController@custData');
+// Route::get('/getCustData')->name('getCustData')->uses('CustomerController@getCustData');
 
-Route::get('/garduIndukData')->name('garduIndukData')->uses('MasterController@garduIndukData');
+// Route::get('/garduIndukData')->name('garduIndukData')->uses('MasterController@garduIndukData');
 
 Auth::routes();

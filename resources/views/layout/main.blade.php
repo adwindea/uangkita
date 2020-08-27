@@ -27,6 +27,9 @@
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
@@ -55,6 +58,8 @@
     <!-- daterangepicker -->
     <script src="{{ url('AdminLTE/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ url('AdminLTE/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <!-- Select2 -->
+    <script src="{{url('AdminLTE/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Tempusdominus Bootstrap 4 -->
     <script src="{{url('AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <!-- Summernote -->
