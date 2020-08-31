@@ -15,17 +15,34 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @if(Session::has('success'))
             <div class="row">
                 <div class="col-lg-12">
+                    <div class="alert alert-success">
+                        {{ Session::get('success') }}
+                        @php
+                            Session::forget('success');
+                        @endphp
+                    </div>
+                </div>
+            </div>
+            @endif
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="POST" action="{{ route('inputSpendExe') }}">
+                    @csrf
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="spend">Spend</label>
-                                <input type="text" class="form-control" id="spend" placeholder="Spend">
+                                <label for="description">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" placeholder="Description">
+                                @if ($errors->has('description'))
+                                    <span class="text-danger">{{ $errors->first('description') }}</span>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="category">Category</label>
-                                <select class="form-control" id="category" placeholder="Select or Type New" style="width:100%;">
+                                <select class="form-control" id="category" name="category" placeholder="Select or Type New" style="width:100%;">
                                     <option value=""></option>
                                     @isset($categories)
                                         @foreach($categories as $cat)
@@ -33,13 +50,23 @@
                                         @endforeach
                                     @endisset
                                 </select>
+                                @if ($errors->has('category'))
+                                    <span class="text-danger">{{ $errors->first('category') }}</span>
+                                @endif
                             </div>
                             <div class="form-group">
-                                <label for="amount">Amound</label>
-                                <input type="text" class="form-control" id="amount" placeholder="IDR">
+                                <label for="amount">Amount</label>
+                                <input type="text" class="form-control" id="amount" name="amount" placeholder="IDR">
+                                @if ($errors->has('amount'))
+                                    <span class="text-danger">{{ $errors->first('amount') }}</span>
+                                @endif
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -47,7 +74,8 @@
     <script>
         $('#category').select2({
             placeholder: 'Select or Type New',
-            tags: true
+            tags: true,
+            theme: 'bootstrap4'
         });
     </script>
 @endsection

@@ -22,9 +22,19 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{url('custData')}}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Data Pelanggan</p>
+            <a href="{{route('inputSpend')}}" class="nav-link">
+                <i class="nav-icon far fa-keyboard"></i>
+                <p>
+                    Input Spending
+                </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('spendData')}}" class="nav-link">
+                <i class="nav-icon fas fa-list-ul"></i>
+                <p>
+                    Spending Data
+                </p>
             </a>
           </li>
 
