@@ -24,4 +24,8 @@ Route::get('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiG
 
 // Route::get('/garduIndukData')->name('garduIndukData')->uses('MasterController@garduIndukData');
 
-Auth::routes();
+Auth::routes([
+    'register' => true,
+    'verify' => true,
+    'reset' => true,
+]);
