@@ -65,15 +65,29 @@ class FinanceController extends Controller
         return view('finance/spendData');
     }
     public function fiGetSpendData(){
-        $spending = \App\Models\Spending::with(['user:id,name', 'cat:id,category_name'])->get();
-        // $spending = \App\Models\Spending::with([
-        //     'user' => function($query){
-        //         $query->select('name as user_name');
-        //     },
-        //     'cat' => function($query){
-        //         $query->select('category_name as category_name');
-        //     }
-        //     ])->get()->toArray();
-        dd($spending->cat);
+        $spending = \App\Models\Spending::with(['user:id,name as user_name', 'cat:id,category_name'])->where('user_id', Auth::user()->id)->get();
+        return Datatables::of($spending)
+            ->removeColumn('id')
+            ->removeColumn('category')
+            ->addColumn('category_name', '{{$cat["category_name"]}}')
+            ->editColumn('amount', '{{number_format($amount,0)}}{{" IDR"}}')
+            ->editColumn('created_at', '{{date(("d M Y"), strtotime($created_at))}}')
+            ->addIndexColumn()
+            // ->addColumn('action', function ($customers) {
+            //     return '<a href="#edit-'.$customers->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+            // })
+            // ->editColumn('id', '{{$id}}')
+            // ->removeColumn('password')
+            // ->setRowId('id')
+            // ->setRowClass(function ($customers) {
+            //     return $customers->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+            // })
+            // ->setRowData([
+            //     'id' => 'test',
+            // ])
+            // ->setRowAttr([
+            //     'color' => 'red',
+            // ])
+            ->make(true);
     }
 }

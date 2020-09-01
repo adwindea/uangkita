@@ -24,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->share('appName', 'Uang Kita');
+        view()->share('appCurrency', 'IDR');
     }
 }

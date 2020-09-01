@@ -28,8 +28,8 @@
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Category</th>
-                                <th class="text-center">Description</th>
+                                <th class="text-center" style="min-width:120px;">Category</th>
+                                <th class="text-center" style="min-width:250px;">Description</th>
                                 <th class="text-center">Amount</th>
                                 <th class="text-center">Timestamp</th>
                             </tr>
@@ -55,7 +55,7 @@
 <script src="{{url ('AdminLTE/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js')}}"></script>
 <script src="{{url ('AdminLTE/plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js')}}"></script>
 <script type="text/javascript">
-    $('#customer_table').DataTable({
+    $('#spending_table').DataTable({
         processing: true,
         serverSide: true,
         order: [],
@@ -64,13 +64,14 @@
         ajax: '{!! route('getSpendData') !!}',
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'category', name: 'category'},
+            {data: 'category_name', name: 'category_name'},
             {data: 'description', name: 'description'},
             {data: 'amount', name: 'amount'},
             {data: 'created_at', name: 'created_at'}
         ],
         columnDefs: [
             // { visible: false, targets: [ 9, 10, 11] },
+            { className: "text-center", targets: [ 0, 1, 3, 4] },
             { orderable: false, targets: [ 0 ] }
         ],
         dom:
@@ -78,13 +79,12 @@
             "<'row'<'col-lg-6 col-md-6 col-sm-12 col-12'l><'col-lg-6 col-md-6 col-sm-12 col-12'f>>" +
             "<'row'<'col-lg-12 col-md-12 col-12 table-responsive'tr>>" +
             "<'row'<'col-lg-5 col-md-5 col-12'i><'col-lg-7 col-md-7 col-12'p>>",
-        aoColumns: [
-            {sClass: "text-center"},
-            {sClass: "text-center"},
-            null,
-            {sClass: "text-center"},
-            {sClass: "text-center"}
-        ],
+        // aoColumns: [
+        //     null,
+        //     {sClass: "text-center"},
+        //     {sClass: "text-center"},
+        //     null
+        // ],
         buttons: [{
             extend:    'copy',
             text:      '<i class="fa fa-copy"></i>',
