@@ -67,12 +67,8 @@ class FinanceController extends Controller
     }
     public function fiGetSpendData(Request $request){
         $spending = \App\Models\Spending::with(['user:id,name as user_name', 'cat:id,category_name'])->where('user_id', Auth::user()->id);
-        if($catx = $request->get('cat')){
-            $cat = array();
-            foreach($catx as $c){
-                array_push($cat, Crypt::Decrypt($c));
-            }
-            $spending->whereIn('category', $cat);
+        if($cat = $request->get('cat')){
+            $spending->whereIn('category', Crypt::Decrypt($cat));
         }
         if($from = $request->get('from')){
             $spending->whereDate('created_at', '>=', $from);
@@ -83,8 +79,8 @@ class FinanceController extends Controller
         $spending->get();
         return Datatables::of($spending)
             ->removeColumn('id')
-            ->removeColumn('category')
-            ->addColumn('category_name', '{{$cat["category_name"]}}')
+            // ->removeColumn('category')
+            ->editColumn('category', '{{$cat["category_name"]}}')
             ->editColumn('amount', '{{number_format($amount,0)}}{{" IDR"}}')
             ->editColumn('created_at', '{{date(("d M Y"), strtotime($created_at))}}')
             ->addIndexColumn()
