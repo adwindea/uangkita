@@ -67,8 +67,12 @@ class FinanceController extends Controller
     }
     public function fiGetSpendData(Request $request){
         $spending = \App\Models\Spending::with(['user:id,name as user_name', 'cat:id,category_name'])->where('user_id', Auth::user()->id);
-        if($cat = $request->get('cat')){
-            $spending->whereIn('category', Crypt::Decrypt($cat));
+        if($catx = $request->get('cat')){
+            $cat = array();
+            foreach($catx as $c){
+                array_push($cat, Crypt::Decrypt($c));
+            }
+            $spending->whereIn('category', $cat);
         }
         if($from = $request->get('from')){
             $spending->whereDate('created_at', '>=', $from);
