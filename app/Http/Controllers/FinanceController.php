@@ -62,10 +62,25 @@ class FinanceController extends Controller
     }
 
     public function fiSpendData(){
-        return view('finance/spendData');
+        $data['categories'] = Category::all();
+        return view('finance/spendData', $data);
     }
-    public function fiGetSpendData(){
-        $spending = \App\Models\Spending::with(['user:id,name as user_name', 'cat:id,category_name'])->where('user_id', Auth::user()->id)->get();
+    public function fiGetSpendData(Request $request){
+        $spending = \App\Models\Spending::with(['user:id,name as user_name', 'cat:id,category_name'])->where('user_id', Auth::user()->id);
+        if($catx = $request->get('cat')){
+            $cat = array();
+            foreach($catx as $c){
+                array_push($cat, Crypt::Decrypt($c));
+            }
+            $spending->whereIn('category', $cat);
+        }
+        if($from = $request->get('from')){
+            $spending->whereDate('created_at', '>=', $from);
+        }
+        if($to = $request->get('to')){
+            $spending->whereDate('created_at', '<=', $to);
+        }
+        $spending->get();
         return Datatables::of($spending)
             ->removeColumn('id')
             ->removeColumn('category')
@@ -73,6 +88,9 @@ class FinanceController extends Controller
             ->editColumn('amount', '{{number_format($amount,0)}}{{" IDR"}}')
             ->editColumn('created_at', '{{date(("d M Y"), strtotime($created_at))}}')
             ->addIndexColumn()
+            // ->filter(function ($instance) use ($request){
+            //     if(!empty($request->get))
+            // })
             // ->addColumn('action', function ($customers) {
             //     return '<a href="#edit-'.$customers->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
             // })

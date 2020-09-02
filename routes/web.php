@@ -19,6 +19,7 @@ Route::get('/fiInputSpend')->name('inputSpend')->uses('FinanceController@fiInput
 Route::post('/fiInputSpendExe')->name('inputSpendExe')->uses('FinanceController@fiInputSpendExe');
 Route::get('/fiSpendData')->name('spendData')->uses('FinanceController@fiSpendData');
 Route::get('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
+Route::post('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
 // Route::get('/custData')->name('custData')->uses('CustomerController@custData');
 // Route::get('/getCustData')->name('getCustData')->uses('CustomerController@getCustData');
 

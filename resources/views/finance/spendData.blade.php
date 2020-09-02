@@ -20,21 +20,62 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    {{-- <div class="card-header">
-                        <h3 class="card-title">Bordered Table</h3>
-                    </div> --}}
-                <div class="card-body">
-                    <table class="table" id="spending_table" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="text-center">No</th>
-                                <th class="text-center" style="min-width:120px;">Category</th>
-                                <th class="text-center" style="min-width:250px;">Description</th>
-                                <th class="text-center">Amount</th>
-                                <th class="text-center">Timestamp</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <form id="form-filter">
+                                    <div id="filterbox" class="collapse">
+                                        <div class="row">
+                                            <div class="col-md-3 col-sm-6 col-12">
+                                                <label>From: </label>
+                                                <input type="text" class="form-control datepicker" id="from" autocomplete="off">
+                                            </div>
+                                            <div class="col-md-3 col-sm-6 col-12">
+                                                <label>To: </label>
+                                                <input type="text" class="form-control datepicker" id="to" autocomplete="off">
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-12">
+                                                <label>Category: </label>
+                                                <select class="form-control select2bs4" multiple="multiple" id="category" style="width: 100%;">
+                                                    @isset($categories)
+                                                        @foreach($categories as $cat)
+                                                    <option value="{{ \Crypt::encrypt($cat->id) }}">{{ $cat->category_name }}</option>
+                                                        @endforeach
+                                                    @endisset
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <button type="button" id="btn-filter" class="btn btn-primary btn-sm float-right"><i class="fa fa-filter"></i> Filter</button>
+                                                <button type="button" id="btn-reset" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <a data-toggle="collapse" class="btn btn-primary pull-right btn-xs btn-flat collapsed" href="#filterbox" aria-expanded="false"><i class="fa fa-filter"></i> Filter box</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="spending_table" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center" style="min-width:120px;">Category</th>
+                                    <th class="text-center" style="min-width:250px;">Description</th>
+                                    <th class="text-center">Amount</th>
+                                    <th class="text-center">Timestamp</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,13 +96,26 @@
 <script src="{{url ('AdminLTE/plugins/DataTables/pdfmake-0.1.36/pdfmake.min.js')}}"></script>
 <script src="{{url ('AdminLTE/plugins/DataTables/pdfmake-0.1.36/vfs_fonts.js')}}"></script>
 <script type="text/javascript">
-    $('#spending_table').DataTable({
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var table = $('#spending_table').DataTable({
         processing: true,
         serverSide: true,
         order: [],
         scrollX: true,
         stateSave: true,
-        ajax: '{!! route('getSpendData') !!}',
+        ajax: {
+            url: '{!! route('getSpendData') !!}',
+            type: "POST",
+            data: function (data) {
+                data.cat = $('#category').val(),
+                data.from = $('#from').val(),
+                data.to = $('#to').val()
+            }
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'category_name', name: 'category_name'},
@@ -122,5 +176,25 @@
             search: ""
         }
     });
+    $('#btn-filter').click(function(){
+            table.ajax.reload();
+        });
+        $('#btn-reset').click(function(){
+            $('#form-filter')[0].reset();
+            table.ajax.reload();
+        });
+
+    $('#category').select2({
+        theme: 'bootstrap4'
+    });
+    jQuery('.datepicker').datepicker({
+		autoclose: true,
+		format : "yyyy-mm-dd",
+		todayHighlight : true
+	});
+	$('#from').on('changeDate', function (selected) {
+		$('#to').datepicker('setStartDate', selected.date);
+		$(this).datepicker('hide');
+	});
 </script>
 @endsection

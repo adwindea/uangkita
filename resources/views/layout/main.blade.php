@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
         @isset($title)
             {{ $title }} |
@@ -27,6 +28,8 @@
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/datepicker/datepicker3.css') }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -58,6 +61,8 @@
     <!-- daterangepicker -->
     <script src="{{ url('AdminLTE/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ url('AdminLTE/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <!-- datepicker -->
+    <script src="{{ url('AdminLTE/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <!-- Select2 -->
     <script src="{{url('AdminLTE/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Tempusdominus Bootstrap 4 -->
