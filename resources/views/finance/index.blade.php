@@ -36,6 +36,9 @@
             </div>
         </div>
     </section>
+
+    <script src="{{ url('/highcharts/code/highcharts.js') }}"></script>
+    <script src="{{ url('/highcharts/code/modules/drilldown.js') }}"></script>
     <script type="text/javascript">
         $('#dashboard-content').load('{{route("fiLoadDashboard", $month, false)}}');
         $('.datepicker').datepicker({

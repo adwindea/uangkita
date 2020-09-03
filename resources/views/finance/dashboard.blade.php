@@ -100,8 +100,6 @@
     </div>
 </div>
 
-<script src="{{ url('/highcharts/code/highcharts.js') }}"></script>
-<script src="{{ url('/highcharts/code/modules/drilldown.js') }}"></script>
 <script type="text/javascript">
     Highcharts.setOptions({
         colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
