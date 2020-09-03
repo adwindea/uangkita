@@ -28,11 +28,18 @@
             </div>
             @endif
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <form method="POST" action="{{ route('inputSpendExe') }}">
                     @csrf
                     <div class="card">
                         <div class="card-body">
+                            <div class="form-group">
+                                <label for="spend_date">Date</label>
+                            <input type="text" class="form-control datepicker" id="spend_date" name="spend_date" value="{{ date('Y-m-d') }}" placeholder="Date">
+                                @if ($errors->has('spend_date'))
+                                    <span class="text-danger">{{ $errors->first('spend_date') }}</span>
+                                @endif
+                            </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <input type="text" class="form-control" id="description" name="description" placeholder="Description">
@@ -77,5 +84,10 @@
             tags: true,
             theme: 'bootstrap4'
         });
+        $('.datepicker').datepicker({
+		autoclose: true,
+		format : "yyyy-mm-dd",
+		todayHighlight : true
+	});
     </script>
 @endsection

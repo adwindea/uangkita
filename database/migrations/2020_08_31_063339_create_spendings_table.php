@@ -16,6 +16,7 @@ class CreateSpendingsTable extends Migration
         Schema::create('spendings', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->date('spend_date');
             $table->string('description', 100);
             $table->decimal('amount', 20, 5);
             $table->bigInteger('category');

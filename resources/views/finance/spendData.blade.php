@@ -121,7 +121,7 @@
             {data: 'category', name: 'category'},
             {data: 'description', name: 'description'},
             {data: 'amount', name: 'amount'},
-            {data: 'created_at', name: 'created_at'}
+            {data: 'spend_date', name: 'spend_date'}
         ],
         columnDefs: [
             // { visible: false, targets: [ 9, 10, 11] },

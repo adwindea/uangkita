@@ -43,7 +43,8 @@ class FinanceController extends Controller
         $request->validate([
             'description' => 'required',
             'category' => 'required',
-            'amount' => 'required|numeric'
+            'amount' => 'required|numeric',
+            'spend_date' => 'required'
         ]);
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
@@ -86,7 +87,7 @@ class FinanceController extends Controller
             // ->removeColumn('category')
             ->editColumn('category', '{{$cat["category_name"]}}')
             ->editColumn('amount', '{{number_format($amount,0)}}{{" IDR"}}')
-            ->editColumn('created_at', '{{date(("d M Y"), strtotime($created_at))}}')
+            ->editColumn('spend_date', '{{date(("d M Y"), strtotime($spend_date))}}')
             ->addIndexColumn()
             // ->filter(function ($instance) use ($request){
             //     if(!empty($request->get))
