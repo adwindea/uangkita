@@ -9,6 +9,7 @@ use DataTables;
 use Auth;
 use App\Models\Category;
 use App\Models\Spending;
+use App\Models\Income;
 use App\Models\User;
 
 class FinanceController extends Controller
@@ -29,9 +30,58 @@ class FinanceController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function index(){
+    public function index(Request $request){
+        $month = $request->get('month');
+        if(empty($month)){
+            $month = date('Y-m');
+        }
+        $data['month'] = $month;
         $data['user'] = Auth::user();
         return view('finance/index', $data);
+    }
+
+    public function fiLoadDashboard(Request $request){
+        $month = $request->get('month');
+        if(empty($month)){
+            $month = date('Y-m');
+        }
+        $from = $month.'-01';
+        $to = date('Y-m-d', strtotime($from.'+1 month'));
+
+        $dd = '';
+        $chart = '';
+
+        for($tanggal=$from;$tanggal<=$to;$tanggal=date('Y-m-d', strtotime($tanggal. '+1 day'))){
+            $total = 0;
+            $spend = Spending::selectRaw('*, sum(amount) as amount')
+            ->with(['user:id,name as user_name', 'cat:id,category_name'])
+            ->where('user_id', Auth::user()->id)
+            ->where('spend_date', $tanggal)
+            ->groupBy('category')
+            ->get();
+            if(!empty($spend)){
+                $dd .=
+                '{
+                    name: "'.$tanggal.'",
+                    id: "'.$tanggal.'",
+                    data: [';
+                foreach($spend as $s){
+                    if(!empty($s->amount)){
+                        $dd .= '["'.$s->cat->category_name.'",'.$s->amount.'],';
+                        $total = $total + $s->amount;
+                    }
+                }
+                $dd = substr($dd,0,-1);
+                $dd .= ']},';
+            }
+            $chart .= '{
+				name: "'.$tanggal.'",
+				y: '.$total.',
+				drilldown: "'.$tanggal.'"},';
+        }
+        $data['chart'] = substr($chart,0,-1);
+        $data['dd'] = $dd;
+        return view('finance/dashboard', $data);
     }
 
     public function fiInputSpend(){
@@ -59,6 +109,17 @@ class FinanceController extends Controller
             $input['category'] = $insert->id;
         }
         $spending = Spending::create($input);
+        return redirect()->route('inputSpend')->with('success','Data saved successfully.');
+    }
+    public function fiInputIncomeExe(Request $request){
+        $request->validate([
+            'description' => 'required',
+            'amount' => 'required|numeric',
+            'income_date' => 'required'
+        ]);
+        $input = $request->all();
+        $input['user_id'] = Auth::user()->id;
+        $income = Income::create($input);
         return redirect()->route('inputSpend')->with('success','Data saved successfully.');
     }
 
@@ -109,4 +170,5 @@ class FinanceController extends Controller
             // ])
             ->make(true);
     }
+
 }

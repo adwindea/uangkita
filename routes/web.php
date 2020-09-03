@@ -20,6 +20,12 @@ Route::post('/fiInputSpendExe')->name('inputSpendExe')->uses('FinanceController@
 Route::get('/fiSpendData')->name('spendData')->uses('FinanceController@fiSpendData');
 Route::get('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
 Route::post('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
+Route::get('/fiLoadDashboard')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
+Route::post('/fiLoadDashboard')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
+
+Route::post('/fiInputIncomeExe')->name('fiInputIncomeExe')->uses('FinanceController@fiInputIncomeExe');
+
+
 // Route::get('/custData')->name('custData')->uses('CustomerController@custData');
 // Route::get('/getCustData')->name('getCustData')->uses('CustomerController@getCustData');
 

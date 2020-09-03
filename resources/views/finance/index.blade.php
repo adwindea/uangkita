@@ -19,11 +19,25 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Halo {{$user->name}} ngangenin, klik menu lainnya di samping kiri ya.</h3>
+                            <div class="row">
+                                <div class="col-lg-8 col-md-6">
+                                    {{-- <h3 class="card-title">Halo {{$user->name}} ngangenin, klik menu lainnya di samping kiri ya.</h3> --}}
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <input type="text" class="form-control float-right text-center" id="month" name="month" autocomplete="off" value="{{$month}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="dashboard-content"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    {{-- <script src="{{ url('/highcharts/code/highcharts.js') }}" --}}
+    <script type="text/javascript">
+        $('#dashboard-content').load('{{route("fiLoadDashboard")}}');
+    </script>
 @endsection
