@@ -40,14 +40,14 @@ class FinanceController extends Controller
         return view('finance/index', $data);
     }
 
-    public function fiLoadDashboard(Request $request){
-        $month = $request->get('month');
+    public function fiLoadDashboard($month){
         if(empty($month)){
             $month = date('Y-m');
         }
         $from = $month.'-01';
         $to = date('Y-m-d', strtotime($from.'+1 month'));
 
+        //SUMMARY
         $total_spend = Spending::selectRaw('sum(amount) as amount')
         ->where('spend_date', 'like', $month.'%')
         ->where('user_id', Auth::user()->id)
@@ -56,10 +56,36 @@ class FinanceController extends Controller
         ->where('income_date', 'like', $month.'%')
         ->where('user_id', Auth::user()->id)
         ->first();
+        $saving = $total_income->amount-$total_spend->amount;
+        $saving_percent = 0;
+        if(!empty($total_income->amount)){
+            $saving_percent = ($total_income->amount-$total_spend->amount)/$total_income->amount*100;
+        }
 
+        //PIE CHART
+        $pie = '';
+        $monthly_spend = Spending::selectRaw('sum(amount) as amount, category')
+        ->with(['user:id,name as user_name', 'cat:id,category_name'])
+        ->where('spend_date', 'like', $month.'%')
+        ->where('user_id', Auth::user()->id)
+        ->groupBy('category')
+        ->get();
+        if(!empty($monthly_spend)){
+            foreach($monthly_spend as $m){
+                $percent = 0;
+                if(!empty($total_spend->amount) and $total_spend->amount != 0){
+                    $percent = $m->amount/$total_spend->amount*100;
+                }
+                $pie .= '{
+                    name: "'.$m->cat->category_name.'",
+                    y: '.$percent.'},';
+            }
+        }
+        $pie = substr($pie, 0, -1);
+
+        // DAILY SPENDING
         $dd = '';
         $chart = '';
-
         for($tanggal=$from;$tanggal<=$to;$tanggal=date('Y-m-d', strtotime($tanggal. '+1 day'))){
             $total = 0;
             $spend = Spending::selectRaw('*, sum(amount) as amount')
@@ -69,19 +95,24 @@ class FinanceController extends Controller
             ->groupBy('category')
             ->get();
             if(!empty($spend)){
-                $dd .=
+                $x = 0;
+                $ddd =
                 '{
                     name: "'.$tanggal.'",
                     id: "'.$tanggal.'",
                     data: [';
                 foreach($spend as $s){
                     if(!empty($s->amount)){
-                        $dd .= '["'.$s->cat->category_name.'",'.$s->amount.'],';
+                        $ddd .= '["'.$s->cat->category_name.'",'.$s->amount.'],';
                         $total = $total + $s->amount;
+                        $x++;
                     }
                 }
-                $dd = substr($dd,0,-1);
-                $dd .= ']},';
+                $ddd = substr($ddd,0,-1);
+                $ddd .= ']},';
+                if($x > 0){
+                    $dd .= $ddd;
+                }
             }
             $chart .= '{
 				name: "'.$tanggal.'",
@@ -90,10 +121,12 @@ class FinanceController extends Controller
         }
         $data['total_spend'] = $total_spend->amount+0;
         $data['total_income'] = $total_income->amount+0;
-        $data['saving'] = $total_income->amount-$total_spend->amount;
-        $data['saving_percent'] = ($total_income->amount-$total_spend->amount)/$total_income->amount*100;
+        $data['saving'] = $saving;
+        $data['saving_percent'] = $saving_percent;
         $data['chart'] = substr($chart,0,-1);
         $data['dd'] = $dd;
+        $data['pie'] = $pie;
+        $data['monthly_spend'] = $monthly_spend;
         return view('finance/dashboard', $data);
     }
 
