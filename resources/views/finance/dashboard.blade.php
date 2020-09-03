@@ -6,7 +6,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Income</span>
                     <span class="info-box-number">
-                        10
+                        {{$total_income}}
                         <small>IDR</small>
                     </span>
                 </div>
@@ -18,7 +18,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Spending</span>
                     <span class="info-box-number">
-                        10
+                        {{$total_spend}}
                         <small>IDR</small>
                     </span>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Saving</span>
                     <span class="info-box-number">
-                        10
+                        {{$saving}}
                         <small>IDR</small>
                     </span>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Saving</span>
                     <span class="info-box-number">
-                        10
+                        {{$saving_percent}}
                         <small>%</small>
                     </span>
                 </div>

@@ -48,6 +48,15 @@ class FinanceController extends Controller
         $from = $month.'-01';
         $to = date('Y-m-d', strtotime($from.'+1 month'));
 
+        $total_spend = Spending::selectRaw('sum(amount) as amount')
+        ->where('spend_date', 'like', $month.'%')
+        ->where('user_id', Auth::user()->id)
+        ->first();
+        $total_income = Income::selectRaw('sum(amount) as amount')
+        ->where('income_date', 'like', $month.'%')
+        ->where('user_id', Auth::user()->id)
+        ->first();
+
         $dd = '';
         $chart = '';
 
@@ -79,6 +88,10 @@ class FinanceController extends Controller
 				y: '.$total.',
 				drilldown: "'.$tanggal.'"},';
         }
+        $data['total_spend'] = $total_spend->amount+0;
+        $data['total_income'] = $total_income->amount+0;
+        $data['saving'] = $total_income->amount-$total_spend->amount;
+        $data['saving_percent'] = ($total_income->amount-$total_spend->amount)/$total_income->amount*100;
         $data['chart'] = substr($chart,0,-1);
         $data['dd'] = $dd;
         return view('finance/dashboard', $data);
