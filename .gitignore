@@ -1,7 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/highcharts
+/public/highcharts/api.zip
 /storage/*.key
 /vendor
 .env
