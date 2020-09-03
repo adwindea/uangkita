@@ -25,7 +25,7 @@
             <a href="{{route('inputSpend')}}" class="nav-link">
                 <i class="nav-icon far fa-keyboard"></i>
                 <p>
-                    Input Spending
+                    Input
                 </p>
             </a>
           </li>
