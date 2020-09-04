@@ -131,7 +131,8 @@ class FinanceController extends Controller
     }
 
     public function fiInputSpend(){
-        $data['categories'] = Category::where('user_id', Auth::user()->id)->get();
+        $data['categories'] = Category::where('user_id', Auth::user()->id)
+        ->get();
         return view('finance/inputSpend', $data);
     }
 
