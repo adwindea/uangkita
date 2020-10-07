@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Spending;
 use App\Models\Income;
 use App\Models\User;
+use App\Models\MainSetting;
 
 class FinanceController extends Controller
 {
@@ -30,6 +31,28 @@ class FinanceController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+    public function fiMainSetting(Request $request){
+        $searchText = $request->get('searchText');
+        $data['mainsetting'] = MainSetting::where('user_id', Auth::user()->id)->where('tag', 'like', '%'.$searchText.'%')->get();
+        $data['searchText'] = $searchText;
+        return view('finance/mainSetting', $data);
+    }
+    public function fiEditMainSetting(Request $request){
+        $request->validate([
+            'period_date' => 'required|numeric'
+        ]);
+        $period_date = $request->get('period_date');
+        $id = $request->get('setting_id');
+        try{
+            $id = Crypt::decrypt($id);
+        }catch(\RuntimeException $e){
+            $id = '';
+        }
+        $update = array('value'=> $period_date);
+        $setting = MainSetting::where('id', $id)->update($update);
+        return redirect()->route('mainSetting')->with('success','Data saved successfully.');
+    }
+
     public function index(Request $request){
         $month = $request->get('month');
         if(empty($month)){
@@ -44,16 +67,27 @@ class FinanceController extends Controller
         if(empty($month)){
             $month = date('Y-m');
         }
-        $from = $month.'-01';
+        $cutoff = MainSetting::where('user_id', Auth::user()->id)->where('tag', 'cut_off')->first();
+        if($cutoff->value >= 10){
+            $from = $month.'-'.$cutoff->value;
+        }else if($cutoff->value < 10){
+            $from = $month.'-0'.$cutoff->value;
+        }
+        if($cutoff->value > 20){
+            $from = date('Y-m-d', strtotime($from.'-1 month'));
+        }
         $to = date('Y-m-d', strtotime($from.'+1 month'));
 
+        echo $from;
         //SUMMARY
         $total_spend = Spending::selectRaw('sum(amount) as amount')
-        ->where('spend_date', 'like', $month.'%')
+        ->where('spend_date', '>=', $from)
+        ->where('spend_date', '<', $to)
         ->where('user_id', Auth::user()->id)
         ->first();
         $total_income = Income::selectRaw('sum(amount) as amount')
-        ->where('income_date', 'like', $month.'%')
+        ->where('income_date', '>=', $from)
+        ->where('income_date', '<', $to)
         ->where('user_id', Auth::user()->id)
         ->first();
         $saving = $total_income->amount-$total_spend->amount;
@@ -66,7 +100,8 @@ class FinanceController extends Controller
         $pie = '';
         $monthly_spend = Spending::selectRaw('sum(amount) as amount, category')
         ->with(['user:id,name as user_name', 'cat:id,category_name'])
-        ->where('spend_date', 'like', $month.'%')
+        ->where('spend_date', '>=', $from)
+        ->where('spend_date', '<', $to)
         ->where('user_id', Auth::user()->id)
         ->groupBy('category')
         ->get();

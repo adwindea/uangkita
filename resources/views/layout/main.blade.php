@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/summernote/summernote-bs4.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ url ('AdminLTE/plugins/toastr/toastr.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     @yield('styles')
@@ -69,6 +71,8 @@
     <script src="{{url('AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <!-- Summernote -->
     <script src="{{ url('AdminLTE/plugins/summernote/summernote-bs4.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ url ('AdminLTE/plugins/toastr/toastr.min.js')}}"></script>
     <!-- overlayScrollbars -->
     <script src="{{ url('AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->

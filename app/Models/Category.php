@@ -18,4 +18,7 @@ class Category extends Model
     public function user(){
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+    public function budget(){
+        return $this->hasMany('App\Models\Budget');
+    }
 }

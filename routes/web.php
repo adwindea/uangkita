@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/')->name('dashboard')->uses('FinanceController@index');
+Route::get('/fiMainSetting')->name('mainSetting')->uses('FinanceController@fiMainSetting');
+Route::post('/fiMainSetting')->name('mainSetting')->uses('FinanceController@fiMainSetting');
+Route::post('/fiEditMainSetting')->name('editMainSetting')->uses('FinanceController@fiEditMainSetting');
+
+
 Route::get('/fiInputSpend')->name('inputSpend')->uses('FinanceController@fiInputSpend');
 Route::post('/fiInputSpendExe')->name('inputSpendExe')->uses('FinanceController@fiInputSpendExe');
 Route::get('/fiSpendData')->name('spendData')->uses('FinanceController@fiSpendData');
