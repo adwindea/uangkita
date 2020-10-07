@@ -78,7 +78,6 @@ class FinanceController extends Controller
         }
         $to = date('Y-m-d', strtotime($from.'+1 month'));
 
-        echo $from;
         //SUMMARY
         $total_spend = Spending::selectRaw('sum(amount) as amount')
         ->where('spend_date', '>=', $from)

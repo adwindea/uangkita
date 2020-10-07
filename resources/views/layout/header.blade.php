@@ -16,22 +16,27 @@
             </div>
         </div>
     </form> -->
-  
+
       <!-- Right navbar links -->
-      <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-              <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
-                  <i class="fa fa-sign-out-alt"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                  <span class="dropdown-item dropdown-header">Are you sure?</span>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item dropdown-footer" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt"></i> Log Out</a>
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                      @csrf
-                  </form>
-              </div>
-          </li>        <!-- Messages Dropdown Menu -->
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('mainSetting') }}"><i class="fas fa-cog"></i></a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
+                <i class="fa fa-sign-out-alt"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <span class="dropdown-item dropdown-header">Are you sure?</span>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item dropdown-footer" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out-alt"></i> Log Out</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
+        </li>
+
+          <!-- Messages Dropdown Menu -->
         <!-- <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="far fa-comments"></i>
@@ -116,7 +121,7 @@
             <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
           </div>
         </li> -->
-        
+
         <!-- <li class="nav-item">
           <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
             <i class="fas fa-th-large"></i>
