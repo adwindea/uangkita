@@ -19,6 +19,8 @@ Route::get('/fiMainSetting')->name('mainSetting')->uses('FinanceController@fiMai
 Route::post('/fiMainSetting')->name('mainSetting')->uses('FinanceController@fiMainSetting');
 Route::post('/fiEditMainSetting')->name('editMainSetting')->uses('FinanceController@fiEditMainSetting');
 
+Route::get('/fiBudget')->name('budget')->uses('FinanceController@fiBudget');
+Route::post('/fiBudgetInsert')->name('budgetInsert')->uses('FinanceController@fiBudgetInsert');
 
 Route::get('/fiInputSpend')->name('inputSpend')->uses('FinanceController@fiInputSpend');
 Route::post('/fiInputSpendExe')->name('inputSpendExe')->uses('FinanceController@fiInputSpendExe');

@@ -12,6 +12,7 @@ use App\Models\Spending;
 use App\Models\Income;
 use App\Models\User;
 use App\Models\MainSetting;
+use App\Models\Budget;
 
 class FinanceController extends Controller
 {
@@ -250,6 +251,12 @@ class FinanceController extends Controller
             //     'color' => 'red',
             // ])
             ->make(true);
+    }
+
+    function fiBudget(){
+        $data['categories'] = Category::where('user_id', Auth::user()->id)->get();
+        $data['budgets'] = Budget::with('category:id,category_name')->where('user_id', Auth::user()->id)->orderBy('period_date', 'desc')->paginate(3);
+        return view('finance/budget', $data);
     }
 
 }
