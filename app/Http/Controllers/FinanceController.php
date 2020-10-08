@@ -255,8 +255,41 @@ class FinanceController extends Controller
 
     function fiBudget(){
         $data['categories'] = Category::where('user_id', Auth::user()->id)->get();
-        $data['budgets'] = Budget::with('category:id,category_name')->where('user_id', Auth::user()->id)->orderBy('period_date', 'desc')->paginate(3);
+        $data['budgets'] = Budget::with('category:id,category_name')->where('user_id', Auth::user()->id)->orderBy('period_date', 'desc')->paginate(20);
         return view('finance/budget', $data);
     }
+    function fiBudgetInsert(Request $request){
+        $request->validate([
+            'category' => 'required',
+            'amount' => 'required|numeric',
+            'period_date' => 'required'
+        ]);
+        $period_date = $request->get('period_date').'-01';
+        $category = $request->get('category');
+        $amount = $request->get('amount');
+        $xid = $request->get('xid');
+        try {
+            $category = Crypt::decrypt($category);
+        } catch (\RuntimeException $e) {
 
+        }
+        $array = array(
+            'period_date'=> $period_date,
+            'category'=> $category,
+            'amount'=> $amount,
+            'user_id'=> Auth::user()->id
+        );
+        if(!empty($xid)){
+            $id = Crypt::Decrypt($xid);
+            $update = Budget::find($id)->update($array);
+        }else{
+            $cek = Budget::where('category', $category)->where('period_date', $period_date)->where('user_id', Auth::user()->id)->first();
+            if(!empty($cek)){
+                $update = Budget::find($cek->id)->update($array);
+            }else{
+                $insert = Budget::create($array);
+            }
+        }
+        return redirect()->route('budget')->with('success','Data saved successfully.');
+    }
 }

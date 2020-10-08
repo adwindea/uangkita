@@ -30,6 +30,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{route('budget')}}" class="nav-link">
+                <i class="nav-icon fas fa-tag"></i>
+                <p>
+                    Budget
+                </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{route('spendData')}}" class="nav-link">
                 <i class="nav-icon fas fa-list-ul"></i>
                 <p>
