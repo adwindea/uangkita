@@ -18,13 +18,24 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header float-right">
                             <div class="row">
-                                <div class="col-lg-8 col-md-6">
-                                    {{-- <h3 class="card-title">Halo {{$user->name}} ngangenin, klik menu lainnya di samping kiri ya.</h3> --}}
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <input type="text" class="form-control float-right text-center datepicker" id="month" name="month" autocomplete="off" value="{{$month}}">
+                                <div class="col-md-6 col-12"></div>
+                                <div class="col-md-6 col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label for="from">Start Date</label>
+                                                <input type="text" class="form-control float-right text-center datepicker" id="from" name="from" onchange="loadDash()" autocomplete="off" value="{{$from}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label for="to">End Date</label>
+                                                <input type="text" class="form-control float-right text-center datepicker" id="to" name="to" onchange="loadDash()"  autocomplete="off" value="{{$to}}">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -40,20 +51,29 @@
     <script src="{{ url('/highcharts/code/highcharts.js') }}"></script>
     <script src="{{ url('/highcharts/code/modules/drilldown.js') }}"></script>
     <script type="text/javascript">
-        $('#dashboard-content').load('{{route("fiLoadDashboard", $month, false)}}');
+        $('#dashboard-content').load('{{route("fiLoadDashboard", [$from, $to], false)}}');
         $('.datepicker').datepicker({
             autoclose: true,
-            format : "yyyy-mm",
-            viewMode : "months",
-            minViewMode: "months",
+            format : "yyyy-mm-dd",
+            // viewMode : "months",
+            // minViewMode: "months",
             todayHighlight : true
         });
-        $('#month').on('change', function(){
-            var month = $('#month').val();
-            var url = '{{route("fiLoadDashboard", ":param")}}';
-            url = url.replace(':param', month);
+
+        function loadDash(){
+            var from = $('#from').val();
+            var to = $('#to').val();
+            var url = '{{route("fiLoadDashboard", [":param1", ":param2"])}}';
+            url = url.replace(':param1', from);
+            url = url.replace(':param2', to);
             $('#dashboard-content').load(url);
-        });
+        }
+        // $('#month').on('change', function(){
+        //     var month = $('#month').val();
+        //     var url = '{{route("fiLoadDashboard", ":param")}}';
+        //     url = url.replace(':param', month);
+        //     $('#dashboard-content').load(url);
+        // });
         Highcharts.setOptions({
             colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
                 return {

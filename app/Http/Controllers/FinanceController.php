@@ -55,29 +55,40 @@ class FinanceController extends Controller
     }
 
     public function index(Request $request){
-        $month = $request->get('month');
-        if(empty($month)){
-            $month = date('Y-m');
+        $from = $request->get('from');
+        $to = $request->get('to');
+        if(empty($to)){
+            $cutoff = MainSetting::where('user_id', Auth::user()->id)->where('tag', 'cut_off')->first();
+            $to = date('Y-m');
+            if($cutoff->value >= 10){
+                $to = $to.'-'.$cutoff->value;
+            }else if($cutoff->value < 10){
+                $to = $to.'-0'.$cutoff->value;
+            }
         }
-        $data['month'] = $month;
+        if(empty($from)){
+            $from = date('Y-m-d', strtotime($to.'-1 month'));
+        }
+        $data['from'] = $from;
+        $data['to'] = $to;
         $data['user'] = Auth::user();
         return view('finance/index', $data);
     }
 
-    public function fiLoadDashboard($month){
-        if(empty($month)){
-            $month = date('Y-m');
-        }
-        $cutoff = MainSetting::where('user_id', Auth::user()->id)->where('tag', 'cut_off')->first();
-        if($cutoff->value >= 10){
-            $from = $month.'-'.$cutoff->value;
-        }else if($cutoff->value < 10){
-            $from = $month.'-0'.$cutoff->value;
-        }
-        if($cutoff->value > 20){
-            $from = date('Y-m-d', strtotime($from.'-1 month'));
-        }
-        $to = date('Y-m-d', strtotime($from.'+1 month'));
+    public function fiLoadDashboard($from, $to){
+        // if(empty($month)){
+        //     $month = date('Y-m');
+        // }
+        // $cutoff = MainSetting::where('user_id', Auth::user()->id)->where('tag', 'cut_off')->first();
+        // if($cutoff->value >= 10){
+        //     $from = $month.'-'.$cutoff->value;
+        // }else if($cutoff->value < 10){
+        //     $from = $month.'-0'.$cutoff->value;
+        // }
+        // if($cutoff->value > 20){
+        //     $from = date('Y-m-d', strtotime($from.'-1 month'));
+        // }
+        // $to = date('Y-m-d', strtotime($from.'+1 month'));
 
         //SUMMARY
         $total_spend = Spending::selectRaw('sum(amount) as amount')
