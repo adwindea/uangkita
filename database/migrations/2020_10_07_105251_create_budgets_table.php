@@ -17,7 +17,6 @@ class CreateBudgetsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->date('period_date');
-            $table->string('description', 100);
             $table->decimal('amount', 20, 5);
             $table->bigInteger('category');
             $table->bigInteger('user_id');
