@@ -125,10 +125,10 @@ class FinanceController extends Controller
         // ->get();
         $monthly_spend = Category::with([
         'spending'=> function ($query) use ($from, $to) {
-            $query->selectRaw('sum(amount) as spend_sum, category')->where('spend_date', '>=', $from)->where('spend_date', '<=', $to)->groupBy('category')->first();
+            $query->selectRaw('sum(amount) as spend_sum, category')->where('spend_date', '>=', $from)->where('spend_date', '<=', $to)->groupBy('category');
         },
         'budget'=> function ($query) use ($from, $to) {
-            $query->selectRaw('sum(amount) as budget_sum, category')->where('period_date', '>=', $from)->where('period_date', '<=', $to)->groupBy('category')->first();
+            $query->selectRaw('sum(amount) as budget_sum, category')->where('period_date', '>=', $from)->where('period_date', '<=', $to)->groupBy('category');
         }])
         ->where('user_id', Auth::user()->id)
         ->get();
