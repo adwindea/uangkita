@@ -1,4 +1,4 @@
-@extends('layout.main', ['title'=> 'Spending Data'])
+@extends('layout.main', ['title'=> 'Income Data'])
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -6,10 +6,10 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Spending Data</h1>
+                <h1 class="m-0 text-dark">Income Data</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
-                <a class="btn btn-success float-right" href="{{route('inputSpend', 'spending')}}"><i class="fa fa-plus"></i></a>
+                <a class="btn btn-success float-right" href="{{route('inputSpend', 'income')}}"><i class="fa fa-plus"></i></a>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -36,14 +36,14 @@
                                                 <input type="text" class="form-control datepicker" id="to" autocomplete="off">
                                             </div>
                                             <div class="col-md-6 col-sm-12 col-12">
-                                                <label>Category: </label>
+                                                {{-- <label>Category: </label>
                                                 <select class="form-control select2bs4" multiple="multiple" id="category" style="width: 100%;">
                                                     @isset($categories)
                                                         @foreach($categories as $cat)
                                                     <option value="{{ \Crypt::encrypt($cat->id) }}">{{ $cat->category_name }}</option>
                                                         @endforeach
                                                     @endisset
-                                                </select>
+                                                </select> --}}
                                             </div>
                                         </div>
                                         <br>
@@ -65,11 +65,10 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <table class="table" id="spending_table" cellspacing="0" width="100%">
+                        <table class="table" id="income_table" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center" style="min-width:120px;">Category</th>
                                     <th class="text-center" style="min-width:250px;">Description</th>
                                     <th class="text-center">Amount</th>
                                     <th class="text-center">Timestamp</th>
@@ -102,31 +101,29 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    var table = $('#spending_table').DataTable({
+    var table = $('#income_table').DataTable({
         processing: true,
         serverSide: true,
         order: [],
         scrollX: true,
         stateSave: true,
         ajax: {
-            url: '{!! route('getSpendData') !!}',
+            url: '{!! route('getIncomeData') !!}',
             type: "POST",
             data: function (data) {
-                data.cat = $('#category').val(),
                 data.from = $('#from').val(),
                 data.to = $('#to').val()
             }
         },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'category', name: 'category'},
             {data: 'description', name: 'description'},
             {data: 'amount', name: 'amount'},
-            {data: 'spend_date', name: 'spend_date'}
+            {data: 'income_date', name: 'income_date'}
         ],
         columnDefs: [
             // { visible: false, targets: [ 9, 10, 11] },
-            { className: "text-center", targets: [ 0, 1, 3, 4] },
+            { className: "text-center", targets: [ 0, 2, 3] },
             { searchable: false, targets: [ 0 ] },
             { orderable: false, targets: [ 0 ] }
         ],
@@ -164,7 +161,7 @@
             exportOptions: {
                 columns: ':visible'
             },
-            messageTop: 'Spending Data'
+            messageTop: 'Income Data'
         },{
             extend: 'colvis',
             className: 'btn btn-default',

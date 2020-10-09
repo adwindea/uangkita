@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/')->name('dashboard')->uses('FinanceController@index');
+Route::get('/fiLoadDashboard/{from?}/{to?}')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
+Route::post('/fiLoadDashboard/{from?}/{to?}')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
+
 Route::get('/fiMainSetting')->name('mainSetting')->uses('FinanceController@fiMainSetting');
 Route::post('/fiMainSetting')->name('mainSetting')->uses('FinanceController@fiMainSetting');
 Route::post('/fiEditMainSetting')->name('editMainSetting')->uses('FinanceController@fiEditMainSetting');
@@ -24,14 +27,20 @@ Route::post('/fiBudgetInsert')->name('budgetInsert')->uses('FinanceController@fi
 
 Route::get('/fiInputSpend/{tab?}')->name('inputSpend')->uses('FinanceController@fiInputSpend');
 Route::post('/fiInputSpendExe')->name('inputSpendExe')->uses('FinanceController@fiInputSpendExe');
+Route::post('/fiInputIncomeExe')->name('fiInputIncomeExe')->uses('FinanceController@fiInputIncomeExe');
+Route::post('/fiInputSavingExe')->name('inputSavingExe')->uses('FinanceController@fiInputSavingExe');
+
 Route::get('/fiSpendData')->name('spendData')->uses('FinanceController@fiSpendData');
 Route::get('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
 Route::post('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
-Route::get('/fiLoadDashboard/{from?}/{to?}')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
-Route::post('/fiLoadDashboard/{from?}/{to?}')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
 
-Route::post('/fiInputIncomeExe')->name('fiInputIncomeExe')->uses('FinanceController@fiInputIncomeExe');
-Route::post('/fiInputSavingExe')->name('inputSavingExe')->uses('FinanceController@fiInputSavingExe');
+Route::get('/fiSavingData')->name('savingData')->uses('FinanceController@fiSavingData');
+Route::get('/fiGetSavingData')->name('getSavingData')->uses('FinanceController@fiGetSavingData');
+Route::post('/fiGetSavingData')->name('getSavingData')->uses('FinanceController@fiGetSavingData');
+
+Route::get('/fiIncomeData')->name('incomeData')->uses('FinanceController@fiIncomeData');
+Route::get('/fiGetIncomeData')->name('getIncomeData')->uses('FinanceController@fiGetIncomeData');
+Route::post('/fiGetIncomeData')->name('getIncomeData')->uses('FinanceController@fiGetIncomeData');
 
 
 // Route::get('/custData')->name('custData')->uses('CustomerController@custData');

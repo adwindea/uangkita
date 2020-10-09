@@ -266,18 +266,98 @@ class FinanceController extends Controller
             $spending->whereIn('category', $cat);
         }
         if($from = $request->get('from')){
-            $spending->whereDate('created_at', '>=', $from);
+            $spending->whereDate('spend_date', '>=', $from);
         }
         if($to = $request->get('to')){
-            $spending->whereDate('created_at', '<=', $to);
+            $spending->whereDate('spend_date', '<=', $to);
         }
         $spending->get();
         return Datatables::of($spending)
             ->removeColumn('id')
             // ->removeColumn('category')
             ->editColumn('category', '{{$cat["category_name"]}}')
-            ->editColumn('amount', '{{number_format($amount,0)}}{{" IDR"}}')
+            ->editColumn('amount', '{{number_format($amount,0,",",".")}}{{" IDR"}}')
             ->editColumn('spend_date', '{{date(("d M Y"), strtotime($spend_date))}}')
+            ->addIndexColumn()
+            // ->filter(function ($instance) use ($request){
+            //     if(!empty($request->get))
+            // })
+            // ->addColumn('action', function ($customers) {
+            //     return '<a href="#edit-'.$customers->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+            // })
+            // ->editColumn('id', '{{$id}}')
+            // ->removeColumn('password')
+            // ->setRowId('id')
+            // ->setRowClass(function ($customers) {
+            //     return $customers->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+            // })
+            // ->setRowData([
+            //     'id' => 'test',
+            // ])
+            // ->setRowAttr([
+            //     'color' => 'red',
+            // ])
+            ->make(true);
+    }
+
+    public function fiSavingData(){
+        $data['title'] = 'Saving Data';
+        return view('finance/savingData', $data);
+    }
+    public function fiGetSavingData(Request $request){
+        $saving = \App\Models\Saving::with(['user:id,name as user_name'])->where('user_id', Auth::user()->id);
+        if($from = $request->get('from')){
+            $saving->whereDate('saving_date', '>=', $from);
+        }
+        if($to = $request->get('to')){
+            $saving->whereDate('saving_date', '<=', $to);
+        }
+        $saving->get();
+        return Datatables::of($saving)
+            ->removeColumn('id')
+            // ->removeColumn('category')
+            ->editColumn('amount', '{{number_format($amount,0,",",".")}}{{" IDR"}}')
+            ->editColumn('saving_date', '{{date(("d M Y"), strtotime($saving_date))}}')
+            ->addIndexColumn()
+            // ->filter(function ($instance) use ($request){
+            //     if(!empty($request->get))
+            // })
+            // ->addColumn('action', function ($customers) {
+            //     return '<a href="#edit-'.$customers->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+            // })
+            // ->editColumn('id', '{{$id}}')
+            // ->removeColumn('password')
+            // ->setRowId('id')
+            // ->setRowClass(function ($customers) {
+            //     return $customers->id % 2 == 0 ? 'alert-success' : 'alert-warning';
+            // })
+            // ->setRowData([
+            //     'id' => 'test',
+            // ])
+            // ->setRowAttr([
+            //     'color' => 'red',
+            // ])
+            ->make(true);
+    }
+
+    public function fiIncomeData(){
+        $data['title'] = 'Income Data';
+        return view('finance/incomeData', $data);
+    }
+    public function fiGetIncomeData(Request $request){
+        $income = \App\Models\Income::with(['user:id,name as user_name'])->where('user_id', Auth::user()->id);
+        if($from = $request->get('from')){
+            $income->whereDate('income_date', '>=', $from);
+        }
+        if($to = $request->get('to')){
+            $income->whereDate('income_date', '<=', $to);
+        }
+        $income->get();
+        return Datatables::of($income)
+            ->removeColumn('id')
+            // ->removeColumn('category')
+            ->editColumn('amount', '{{number_format($amount,0,",",".")}}{{" IDR"}}')
+            ->editColumn('income_date', '{{date(("d M Y"), strtotime($income_date))}}')
             ->addIndexColumn()
             // ->filter(function ($instance) use ($request){
             //     if(!empty($request->get))
