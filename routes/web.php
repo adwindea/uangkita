@@ -22,7 +22,7 @@ Route::post('/fiEditMainSetting')->name('editMainSetting')->uses('FinanceControl
 Route::get('/fiBudget')->name('budget')->uses('FinanceController@fiBudget');
 Route::post('/fiBudgetInsert')->name('budgetInsert')->uses('FinanceController@fiBudgetInsert');
 
-Route::get('/fiInputSpend')->name('inputSpend')->uses('FinanceController@fiInputSpend');
+Route::get('/fiInputSpend/{tab?}')->name('inputSpend')->uses('FinanceController@fiInputSpend');
 Route::post('/fiInputSpendExe')->name('inputSpendExe')->uses('FinanceController@fiInputSpendExe');
 Route::get('/fiSpendData')->name('spendData')->uses('FinanceController@fiSpendData');
 Route::get('/fiGetSpendData')->name('getSpendData')->uses('FinanceController@fiGetSpendData');
@@ -31,6 +31,7 @@ Route::get('/fiLoadDashboard/{from?}/{to?}')->name('fiLoadDashboard')->uses('Fin
 Route::post('/fiLoadDashboard/{from?}/{to?}')->name('fiLoadDashboard')->uses('FinanceController@fiLoadDashboard');
 
 Route::post('/fiInputIncomeExe')->name('fiInputIncomeExe')->uses('FinanceController@fiInputIncomeExe');
+Route::post('/fiInputSavingExe')->name('inputSavingExe')->uses('FinanceController@fiInputSavingExe');
 
 
 // Route::get('/custData')->name('custData')->uses('CustomerController@custData');

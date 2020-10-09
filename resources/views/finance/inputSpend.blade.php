@@ -29,19 +29,19 @@
                         <div class="card-header p-0 border-bottom-0">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link" id="spend-tab" data-toggle="pill" href="#spend" role="tab" aria-controls="spend">Spending</a>
+                                    <a class="nav-link @if($tab == 'spending' or $tab == ''){{__('active')}}@endif" id="spend-tab" data-toggle="pill" href="#spend" role="tab" aria-controls="spend">Spending</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="income-tab" data-toggle="pill" href="#income" role="tab" aria-controls="income">Income</a>
+                                    <a class="nav-link @if($tab == 'income'){{__('active')}}@endif" id="income-tab" data-toggle="pill" href="#income" role="tab" aria-controls="income">Income</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="saving-tab" data-toggle="pill" href="#saving" role="tab" aria-controls="saving">Saving</a>
+                                    <a class="nav-link @if($tab == 'saving'){{__('active')}}@endif" id="saving-tab" data-toggle="pill" href="#saving" role="tab" aria-controls="saving">Saving</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="card-body">
                             <div class="tab-content">
-                                <div class="tab-pane fade" id="spend" role="tabpanel" aria-labelledby="spend">
+                                <div class="tab-pane fade @if($tab == 'spending' or $tab == ''){{__('active show')}}@endif" id="spend" role="tabpanel" aria-labelledby="spend">
                                     <form method="POST" action="{{ route('inputSpendExe') }}">
                                     @csrf
                                     <div class="card-body">
@@ -86,7 +86,7 @@
                                     </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income">
+                                <div class="tab-pane fade @if($tab == 'income'){{__('active show')}}@endif" id="income" role="tabpanel" aria-labelledby="income">
                                     <form method="POST" action="{{ route('fiInputIncomeExe') }}">
                                     @csrf
                                     <div class="card-body">
@@ -117,8 +117,43 @@
                                     </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane fade" id="saving" role="tabpanel" aria-labelledby="income">
-
+                                <div class="tab-pane fade @if($tab == 'saving'){{__('active show')}}@endif" id="saving" role="tabpanel" aria-labelledby="saving">
+                                    <form method="POST" action="{{ route('inputSavingExe') }}">
+                                    @csrf
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="saving_date">Date</label>
+                                            <input type="text" class="form-control datepicker" id="saving_date" name="saving_date" value="{{ date('Y-m-d') }}" placeholder="Date">
+                                            @if ($errors->has('saving_date'))
+                                                <span class="text-danger">{{ $errors->first('saving_date') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="saving_description">Description</label>
+                                            <select class="form-control" id="saving_description" name="description" placeholder="Select or Type New" style="width:100%;">
+                                                <option value=""></option>
+                                                @isset($saving)
+                                                    @foreach($saving as $sav)
+                                                <option value="{{ $sav->description }}">{{ $sav->description }}</option>
+                                                    @endforeach
+                                                @endisset
+                                            </select>
+                                            @if ($errors->has('description'))
+                                                <span class="text-danger">{{ $errors->first('description') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="saving_amount">Amount</label>
+                                            <input type="text" class="form-control" id="saving_amount" name="amount" placeholder="IDR">
+                                            @if ($errors->has('amount'))
+                                                <span class="text-danger">{{ $errors->first('amount') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +249,7 @@
         </div>
     </section>
     <script>
-        $('#category').select2({
+        $('#category, #saving_description').select2({
             placeholder: 'Select or Type New',
             tags: true,
             theme: 'bootstrap4'

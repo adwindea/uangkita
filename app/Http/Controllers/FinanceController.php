@@ -13,6 +13,7 @@ use App\Models\Income;
 use App\Models\User;
 use App\Models\MainSetting;
 use App\Models\Budget;
+use App\Models\Saving;
 
 class FinanceController extends Controller
 {
@@ -187,12 +188,12 @@ class FinanceController extends Controller
         return view('finance/dashboard', $data);
     }
 
-    public function fiInputSpend(){
-        $data['categories'] = Category::where('user_id', Auth::user()->id)
-        ->get();
+    public function fiInputSpend($tab = ''){
+        $data['categories'] = Category::where('user_id', Auth::user()->id)->get();
+        $data['saving'] = Saving::select('description')->groupBy('description')->get();
+        $data['tab'] = $tab;
         return view('finance/inputSpend', $data);
     }
-
     public function fiInputSpendExe(Request $request){
         $request->validate([
             'description' => 'required',
@@ -213,7 +214,7 @@ class FinanceController extends Controller
             $input['category'] = $insert->id;
         }
         $spending = Spending::create($input);
-        return redirect()->route('inputSpend')->with('success','Data saved successfully.');
+        return redirect()->route('inputSpend', 'spending')->with('success','Data saved successfully.');
     }
     public function fiInputIncomeExe(Request $request){
         $request->validate([
@@ -224,8 +225,21 @@ class FinanceController extends Controller
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         $income = Income::create($input);
-        return redirect()->route('inputSpend')->with('success','Data saved successfully.');
+        return redirect()->route('inputSpend', 'income')->with('success','Data saved successfully.');
     }
+    function fiInputSavingExe(Request $request){
+        $request->validate([
+            'description' => 'required',
+            'amount' => 'required|numeric',
+            'saving_date' => 'required'
+        ]);
+        $input = $request->all();
+        $input['user_id'] = Auth::user()->id;
+        $input['description'] = strtoupper($input['description']);
+        $saving = Saving::create($input);
+        return redirect()->route('inputSpend', 'saving')->with('success','Data saved successfully.');
+    }
+
 
     public function fiSpendData(){
         $data['categories'] = Category::all();
@@ -274,6 +288,7 @@ class FinanceController extends Controller
             // ])
             ->make(true);
     }
+
 
     function fiBudget(){
         $data['categories'] = Category::where('user_id', Auth::user()->id)->get();
