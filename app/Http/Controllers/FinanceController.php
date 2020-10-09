@@ -94,19 +94,25 @@ class FinanceController extends Controller
         //SUMMARY
         $total_spend = Spending::selectRaw('sum(amount) as amount')
         ->where('spend_date', '>=', $from)
-        ->where('spend_date', '<', $to)
+        ->where('spend_date', '<=', $to)
         ->where('user_id', Auth::user()->id)
         ->first();
         $total_income = Income::selectRaw('sum(amount) as amount')
         ->where('income_date', '>=', $from)
-        ->where('income_date', '<', $to)
+        ->where('income_date', '<=', $to)
         ->where('user_id', Auth::user()->id)
         ->first();
-        $saving = $total_income->amount-$total_spend->amount;
-        $saving_percent = 0;
-        if(!empty($total_income->amount)){
-            $saving_percent = ($total_income->amount-$total_spend->amount)/$total_income->amount*100;
-        }
+        $total_saving = Saving::selectRaw('sum(amount) as amount')
+        ->where('saving_date', '>=', $from)
+        ->where('saving_date', '<=', $to)
+        ->where('user_id', Auth::user()->id)
+        ->first();
+        $remain = $total_income->amount-$total_spend->amount-$total_saving->amount;
+        // $saving = $total_income->amount-$total_spend->amount;
+        // $saving_percent = 0;
+        // if(!empty($total_income->amount)){
+        //     $saving_percent = ($total_income->amount-$total_spend->amount)/$total_income->amount*100;
+        // }
 
         //PIE CHART
         $pie = '';
@@ -119,10 +125,10 @@ class FinanceController extends Controller
         // ->get();
         $monthly_spend = Category::with([
         'spending'=> function ($query) use ($from, $to) {
-            $query->selectRaw('sum(amount) as spend_sum, category')->where('spend_date', '>=', $from)->where('spend_date', '<', $to)->groupBy('category')->first();
+            $query->selectRaw('sum(amount) as spend_sum, category')->where('spend_date', '>=', $from)->where('spend_date', '<=', $to)->groupBy('category')->first();
         },
         'budget'=> function ($query) use ($from, $to) {
-            $query->selectRaw('sum(amount) as budget_sum, category')->where('period_date', '>=', $from)->where('period_date', '<', $to)->groupBy('category')->first();
+            $query->selectRaw('sum(amount) as budget_sum, category')->where('period_date', '>=', $from)->where('period_date', '<=', $to)->groupBy('category')->first();
         }])
         ->where('user_id', Auth::user()->id)
         ->get();
@@ -140,6 +146,9 @@ class FinanceController extends Controller
             }
         }
         $pie = substr($pie, 0, -1);
+
+        $monthly_saving = Saving::where('user_id', Auth::user()->id)->where('saving_date', '>=', $from)->where('saving_date', '<=', $to)->get();
+        $monthly_income = Income::where('user_id', Auth::user()->id)->where('income_date', '>=', $from)->where('income_date', '<=', $to)->get();
 
         // DAILY SPENDING
         $dd = '';
@@ -177,14 +186,16 @@ class FinanceController extends Controller
 				y: '.$total.',
 				drilldown: "'.$tanggal.'"},';
         }
-        $data['total_spend'] = $total_spend->amount+0;
-        $data['total_income'] = $total_income->amount+0;
-        $data['saving'] = $saving;
-        $data['saving_percent'] = $saving_percent;
+        $data['total_spend'] = number_format($total_spend->amount, 0, ',', '.');
+        $data['total_income'] = number_format($total_income->amount, 0, ',', '.');
+        $data['total_saving'] = number_format($total_saving->amount, 0, ',', '.');
+        $data['remain'] = number_format($remain, 0, ',', '.');
         $data['chart'] = substr($chart,0,-1);
         $data['dd'] = $dd;
         $data['pie'] = $pie;
         $data['monthly_spend'] = $monthly_spend;
+        $data['monthly_saving'] = $monthly_saving;
+        $data['monthly_income'] = $monthly_income;
         return view('finance/dashboard', $data);
     }
 

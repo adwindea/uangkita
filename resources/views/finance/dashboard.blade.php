@@ -30,7 +30,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Saving</span>
                     <span class="info-box-number">
-                        {{$saving}}
+                        {{$total_saving}}
                         <small>IDR</small>
                     </span>
                 </div>
@@ -38,12 +38,12 @@
         </div>
         <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-credit-card"></i></span>
+                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-money-check-alt"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Saving</span>
+                    <span class="info-box-text">Remain</span>
                     <span class="info-box-number">
-                        {{$saving_percent}}
-                        <small>%</small>
+                        {{$remain}}
+                        <small>IDR</small>
                     </span>
                 </div>
             </div>
@@ -52,56 +52,124 @@
     <div class="row">
         <div class="col-12 col-lg-6 col-md-12">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Spending</h3>
+                </div>
                 <div class="card-body">
                     <div id="spending-pie"></div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Budget</h3>
+        <div id="accordion" class="col-12 col-lg-6 col-md-12">
+            <div class="card card-danger">
+                <a data-toggle="collapse" data-parent="#accordion" href="#spend-acc" class="collapsed card-header">
+                    <h3 class="card-title"><b>Spending</b></h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool"><i class="fas fa-minus"></i></button>
+                    </div>
+                </a>
+                <div id="spend-acc" class="panel-collapse in">
+                    <div class="card-body table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Category</th>
+                                    <th class="text-center">Budget</th>
+                                    <th class="text-center">Spend</th>
+                                    <th class="text-center">Remain</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset($monthly_spend)
+                                    @foreach($monthly_spend as $m)
+                                        @php
+                                            $spend = 0;
+                                            $budget = 0;
+                                        @endphp
+                                        @foreach($m->spending as $s)
+                                            @php
+                                                $spend = $s->spend_sum+0;
+                                            @endphp
+                                        @endforeach
+                                        @foreach($m->budget as $b)
+                                            @php
+                                                $budget = $b->budget_sum+0;
+                                            @endphp
+                                        @endforeach
+                                        @php
+                                            $remain = $budget - $spend;
+                                        @endphp
+                                <tr>
+                                    <td class="text-center">{{$m->category_name}}</td>
+                                    <td class="text-center">{{number_format($budget, 0, ',', '.')}}</td>
+                                    <td class="text-center">{{number_format($spend, 0, ',', '.')}}</td>
+                                    <td class="text-center">{{number_format($remain, 0, ',', '.')}}</td>
+                                </tr>
+                                    @endforeach
+                                @endisset
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="card-body p-0">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Category</th>
-                                <th class="text-center">Budget</th>
-                                <th class="text-center">Spend</th>
-                                <th class="text-center">Remain</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @isset($monthly_spend)
-                                @foreach($monthly_spend as $m)
-                                    @php
-                                        $spend = 0;
-                                        $budget = 0;
-                                    @endphp
-                                    @foreach($m->spending as $s)
-                                        @php
-                                            $spend = $s->spend_sum+0;
-                                        @endphp
+            </div>
+            <div class="card card-success">
+                <a data-toggle="collapse" data-parent="#accordion" href="#saving-acc" class="collapsed card-header">
+                    <h3 class="card-title"><b>Saving</b></h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool"><i class="fas fa-minus"></i></button>
+                    </div>
+                </a>
+                <div id="saving-acc" class="panel-collapse in collapse">
+                    <div class="card-body table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset($monthly_saving)
+                                    @foreach($monthly_saving as $s)
+                                <tr>
+                                    <td class="text-center">{{$s->description}}</td>
+                                    <td class="text-center">{{number_format($s->amount, 0, ',', '.')}}</td>
+                                </tr>
                                     @endforeach
-                                    @foreach($m->budget as $b)
-                                        @php
-                                            $budget = $b->budget_sum+0;
-                                        @endphp
+                                @endisset
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-info">
+                <a data-toggle="collapse" data-parent="#accordion" href="#income-acc" class="collapsed card-header">
+                    <h3 class="card-title"><b>Income</b></h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool"><i class="fas fa-minus"></i></button>
+                    </div>
+                </a>
+                <div id="income-acc" class="panel-collapse in collapse">
+                    <div class="card-body table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset($monthly_income)
+                                    @foreach($monthly_income as $i)
+                                <tr>
+                                    <td class="text-center">{{$i->description}}</td>
+                                    <td class="text-center">{{number_format($i->amount, 0, ',', '.')}}</td>
+                                </tr>
                                     @endforeach
-                                    @php
-                                        $remain = $budget - $spend;
-                                    @endphp
-                            <tr>
-                                <td class="text-center">{{$m->category_name}}</td>
-                                <td class="text-center">{{number_format($budget, 0, ',', '.')}}</td>
-                                <td class="text-center">{{number_format($spend, 0, ',', '.')}}</td>
-                                <td class="text-center">{{number_format($remain, 0, ',', '.')}}</td>
-                            </tr>
-                                @endforeach
-                            @endisset
-                        </tbody>
-                    </table>
+                                @endisset
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,7 +234,7 @@
             type: 'pie'
         },
         title: {
-            text: 'Monthly Spending'
+            text: 'Ratio'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
