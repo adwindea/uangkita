@@ -60,30 +60,43 @@
         <div class="col-12 col-lg-6 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Spending Rank</h3>
+                    <h3 class="card-title">Budget</h3>
                 </div>
                 <div class="card-body p-0">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th class="text-center">Category</th>
-                                <th class="text-center">IDR</th>
-                                <th class="text-center">%</th>
+                                <th class="text-center">Budget</th>
+                                <th class="text-center">Spend</th>
+                                <th class="text-center">Remain</th>
                             </tr>
                         </thead>
                         <tbody>
                             @isset($monthly_spend)
                                 @foreach($monthly_spend as $m)
                                     @php
-                                        $percent = 0;
-                                        if($total_spend != 0 and !empty($total_spend)){
-                                            $percent = $m->amount/$total_spend*100;
-                                        }
+                                        $spend = 0;
+                                        $budget = 0;
+                                    @endphp
+                                    @foreach($m->spending as $s)
+                                        @php
+                                            $spend = $s->spend_sum+0;
+                                        @endphp
+                                    @endforeach
+                                    @foreach($m->budget as $b)
+                                        @php
+                                            $budget = $b->budget_sum+0;
+                                        @endphp
+                                    @endforeach
+                                    @php
+                                        $remain = $budget - $spend;
                                     @endphp
                             <tr>
-                                <td class="text-center">{{$m->cat->category_name}}</td>
-                                <td class="text-center">{{$m->amount+0}}</td>
-                                <td class="text-center">{{number_format($percent,2,'.','')}}</td>
+                                <td class="text-center">{{$m->category_name}}</td>
+                                <td class="text-center">{{number_format($budget, 0, ',', '.')}}</td>
+                                <td class="text-center">{{number_format($spend, 0, ',', '.')}}</td>
+                                <td class="text-center">{{number_format($remain, 0, ',', '.')}}</td>
                             </tr>
                                 @endforeach
                             @endisset

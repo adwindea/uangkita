@@ -109,21 +109,32 @@ class FinanceController extends Controller
 
         //PIE CHART
         $pie = '';
-        $monthly_spend = Spending::selectRaw('sum(amount) as amount, category')
-        ->with(['user:id,name as user_name', 'cat:id,category_name'])
-        ->where('spend_date', '>=', $from)
-        ->where('spend_date', '<', $to)
+        // $monthly_spend = Spending::selectRaw('sum(amount) as amount, category')
+        // ->with(['user:id,name as user_name', 'cat:id,category_name'])
+        // ->where('spend_date', '>=', $from)
+        // ->where('spend_date', '<', $to)
+        // ->where('user_id', Auth::user()->id)
+        // ->groupBy('category')
+        // ->get();
+        $monthly_spend = Category::with([
+        'spending'=> function ($query) use ($from, $to) {
+            $query->selectRaw('sum(amount) as spend_sum, category')->where('spend_date', '>=', $from)->where('spend_date', '<', $to)->groupBy('category')->first();
+        },
+        'budget'=> function ($query) use ($from, $to) {
+            $query->selectRaw('sum(amount) as budget_sum, category')->where('period_date', '>=', $from)->where('period_date', '<', $to)->groupBy('category')->first();
+        }])
         ->where('user_id', Auth::user()->id)
-        ->groupBy('category')
         ->get();
         if(!empty($monthly_spend)){
             foreach($monthly_spend as $m){
                 $percent = 0;
                 if(!empty($total_spend->amount) and $total_spend->amount != 0){
-                    $percent = $m->amount/$total_spend->amount*100;
+                    foreach($m->spending as $s){
+                        $percent = $s->spend_sum/$total_spend->amount*100;
+                    }
                 }
                 $pie .= '{
-                    name: "'.$m->cat->category_name.'",
+                    name: "'.$m->category_name.'",
                     y: '.$percent.'},';
             }
         }

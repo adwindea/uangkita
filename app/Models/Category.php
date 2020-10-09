@@ -13,12 +13,12 @@ class Category extends Model
     protected $guarded = [];
 
     public function spending(){
-        return $this->hasMany('App\Models\Spending');
+        return $this->hasMany('App\Models\Spending', 'category', 'id');
     }
     public function user(){
         return $this->belongsTo('App\Models\User', 'user_id');
     }
     public function budget(){
-        return $this->hasMany('App\Models\Budget');
+        return $this->hasMany('App\Models\Budget', 'category', 'id');
     }
 }
