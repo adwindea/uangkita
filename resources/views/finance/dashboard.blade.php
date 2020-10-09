@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
-                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-sign-in-alt"></i></span>
+                    <a href="{{route('incomeData')}}" class="info-box-icon bg-info elevation-1"><i class="fas fa-sign-in-alt"></i></a>
                 <div class="info-box-content">
                     <span class="info-box-text">Income</span>
                     <span class="info-box-number">
@@ -14,7 +14,7 @@
         </div>
         <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-sign-out-alt"></i></span>
+                <a href="{{route('spendData')}}" class="info-box-icon bg-danger elevation-1"><i class="fas fa-sign-out-alt"></i></a>
                 <div class="info-box-content">
                     <span class="info-box-text">Spending</span>
                     <span class="info-box-number">
@@ -26,7 +26,7 @@
         </div>
         <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-wallet"></i></span>
+                <a href="{{route('savingData')}}" class="info-box-icon bg-success elevation-1"><i class="fas fa-wallet"></i></a>
                 <div class="info-box-content">
                     <span class="info-box-text">Saving</span>
                     <span class="info-box-number">

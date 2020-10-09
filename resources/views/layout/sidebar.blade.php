@@ -37,13 +37,40 @@
                 </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{{route('spendData')}}" class="nav-link">
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-list-ul"></i>
                 <p>
-                    Spending Data
+                    Data
+                    <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{route('incomeData')}}" class="nav-link">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>
+                            Income
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('savingData')}}" class="nav-link">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>
+                            Saving
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('spendData')}}" class="nav-link">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>
+                            Spending
+                        </p>
+                    </a>
+                </li>
+            </ul>
           </li>
 
           <!-- <li class="nav-item has-treeview">
