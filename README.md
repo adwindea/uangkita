@@ -1,8 +1,11 @@
 # UANGKITA
 
-Uangkita is a simple application for recording and reporting personal finances
+Uangkita is a simple application for recording and reporting personal finances.
 
-### Build With
+[Demo](https://uangkita.herokuapp.com/)
+
+
+## Build With
 
 * [Bootstrap](https://getbootstrap.com)
 * [JQuery](https://jquery.com)
